@@ -43,11 +43,11 @@ jobs:
       - name: Check flake still evaluates
         run: nix flake check --show-trace
 
-      - name: Verify lib and modules still export correctly
+      - name: Verify exports still work
         run: |
-          nix eval .#lib --apply builtins.attrNames
-          nix eval .#nixosModules.default --apply 'x: "ok"'
-          nix eval .#homeModules.default --apply 'x: "ok"'
+          nix build .#default --dry-run --show-trace
+          nix eval .#homeManagerModules.default --apply 'x: "ok"'
+          nix eval .#overlays.default --apply 'x: "ok"'
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
@@ -63,7 +63,7 @@ jobs:
             - `nixpkgs`
             - `stylix`
 
-            Flake check passed — lib, nixosModules, and homeModules all evaluate correctly.
+            Flake check passed — package, homeManagerModules, and overlay all evaluate correctly.
           labels: |
             dependencies
             automated

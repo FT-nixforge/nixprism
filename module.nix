@@ -212,7 +212,7 @@ let
     }
   '';
 
-  nixprismPackage = self.packages.${pkgs.system}.default;
+  nixprismPackage = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
 in
 {

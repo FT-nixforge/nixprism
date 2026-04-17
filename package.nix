@@ -53,7 +53,7 @@ stdenvNoCC.mkDerivation {
     wrapProgram $out/bin/nixprism \
       --prefix PATH : ${
         lib.makeBinPath [
-          rofi-wayland
+          rofi
           fd
           xdg-utils
           wl-clipboard

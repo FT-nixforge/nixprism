@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   makeWrapper,
-  rofi-wayland,
+  rofi,
   fd,
   xdg-utils,
   wl-clipboard,

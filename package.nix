@@ -40,14 +40,9 @@ stdenvNoCC.mkDerivation {
     # Main launcher
     install -Dm755 scripts/nixprism-launcher.sh $out/bin/nixprism
 
-    # Substitute store paths
+    # Substitute store paths (only the launcher references @out@)
     substituteInPlace $out/bin/nixprism \
       --replace-fail "@out@" "$out"
-
-    for script in $out/share/nixprism/scripts/*.sh; do
-      substituteInPlace "$script" \
-        --replace-fail "@out@" "$out"
-    done
 
     # Wrap with runtime dependencies
     wrapProgram $out/bin/nixprism \

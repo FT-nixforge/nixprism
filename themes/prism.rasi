@@ -1,0 +1,164 @@
+/*
+ * Prism — Default Theme
+ * A modern, macOS Spotlight-inspired launcher theme
+ *
+ * Color scheme: Catppuccin Mocha
+ * Override with the Nix module or set PRISM_THEME env var.
+ */
+
+* {
+    bg:          #1e1e2edd;
+    bg-alt:      #313244dd;
+    fg:          #cdd6f4;
+    fg-alt:      #a6adc8;
+    accent:      #89b4fa;
+    urgent:      #f38ba8;
+    transparent: #00000000;
+
+    font: "Inter 13";
+
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+window {
+    transparency:     "real";
+    location:         center;
+    anchor:           center;
+    fullscreen:       false;
+    width:            680px;
+    border-radius:    20px;
+    background-color: @bg;
+    border:           0px;
+    cursor:           "default";
+}
+
+mainbox {
+    background-color: transparent;
+    children:         [ inputbar, message, listview, mode-switcher ];
+    spacing:          12px;
+    padding:          24px;
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius:    12px;
+    padding:          14px 20px;
+    children:         [ prompt, textbox-prompt-colon, entry ];
+    spacing:          12px;
+}
+
+prompt {
+    background-color: transparent;
+    text-color:       @accent;
+    font:             "Inter Bold 13";
+}
+
+textbox-prompt-colon {
+    expand:           false;
+    str:              "";
+    background-color: transparent;
+    text-color:       @fg-alt;
+}
+
+entry {
+    background-color: transparent;
+    text-color:       @fg;
+    placeholder:      "Type to search...";
+    placeholder-color: @fg-alt;
+    cursor:           text;
+}
+
+listview {
+    background-color: transparent;
+    columns:          1;
+    lines:            7;
+    scrollbar:        false;
+    fixed-height:     true;
+    spacing:          4px;
+    cycle:            true;
+    dynamic:          true;
+    layout:           vertical;
+}
+
+element {
+    background-color: transparent;
+    padding:          10px 16px;
+    border-radius:    10px;
+    spacing:          14px;
+    cursor:           pointer;
+    orientation:      horizontal;
+}
+
+element normal.normal,
+element alternate.normal {
+    background-color: transparent;
+}
+
+element selected.normal {
+    background-color: @bg-alt;
+    text-color:       @fg;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    text-color: @urgent;
+}
+
+element selected.urgent {
+    background-color: @urgent;
+    text-color:       @bg;
+}
+
+element normal.active,
+element alternate.active {
+    text-color: @accent;
+}
+
+element selected.active {
+    background-color: @accent;
+    text-color:       @bg;
+}
+
+element-icon {
+    size:             36px;
+    background-color: transparent;
+    cursor:           inherit;
+}
+
+element-text {
+    background-color: transparent;
+    vertical-align:   0.5;
+    cursor:           inherit;
+}
+
+message {
+    background-color: transparent;
+    padding:          0px 4px;
+}
+
+textbox {
+    background-color: transparent;
+    text-color:       @fg-alt;
+    font:             "Inter 10";
+}
+
+mode-switcher {
+    background-color: transparent;
+    spacing:          8px;
+    padding:          0px 8px 0px 8px;
+}
+
+button {
+    background-color: transparent;
+    text-color:       @fg-alt;
+    padding:          8px 16px;
+    border-radius:    10px;
+    cursor:           pointer;
+    font:             "Inter 11";
+}
+
+button selected {
+    background-color: @bg-alt;
+    text-color:       @accent;
+}

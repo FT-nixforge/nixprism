@@ -22,7 +22,7 @@
         description = "Modern, polished Rofi application launcher for NixOS and Wayland";
         repo = "github:FT-nixforge/ft-nixlaunch";
         provides = [ "packages" "homeModules" "overlays" ];
-        dependencies = [ "nixpalette" ];
+        dependencies = [ "ft-nixpalette" ];
         status = "stable";
         version = "0.1.0";
       };

@@ -61,7 +61,6 @@ jobs:
 
             Updated inputs:
             - `nixpkgs`
-            - `ft-nixpalette`
 
             Flake check passed — packages, homeManagerModules, and overlays all evaluate correctly.
           labels: |

@@ -3,11 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    ft-nixpkgs.url = "github:FT-nixforge/ft-nixpkgs";
   };
 
   outputs =
-    { self, nixpkgs, ft-nixpkgs }:
+    { self, nixpkgs }:
     let
       supportedSystems = [
         "x86_64-linux"

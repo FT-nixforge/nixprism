@@ -25,17 +25,17 @@ let
 
   stylixColors = if stylixAvailable then config.lib.stylix.colors else null;
 
-  # Check if ft-nixpalette is available (via ft-nixpkgs.homeModules.nixpalette)
-  nixpaletteAvailable =
-    (config ? programs.nixpalette)
-    && (config.programs.nixpalette.enable or false)
-    && (config.programs.nixpalette.colors != { });
+  # Check if ft-nixpalette is available (via ft-nixpkgs.homeModules.ft-nixpalette)
+  ft-nixpaletteAvailable =
+    (config ? programs.ft-nixpalette)
+    && (config.programs.ft-nixpalette.enable or false)
+    && (config.programs.ft-nixpalette.colors != { });
 
-  nixpaletteColors = if nixpaletteAvailable then config.programs.nixpalette.colors else null;
+  ft-nixpaletteColors = if ft-nixpaletteAvailable then config.programs.ft-nixpalette.colors else null;
 
   # Resolve colors: priority — ft-nixpalette > Stylix > manual config
   resolvedColors =
-    if cfg.nixpaletteIntegration && nixpaletteColors != null then
+    if cfg.ft-nixpaletteIntegration && ft-nixpaletteColors != null then
       {
         background = nixpaletteColors.base00 or cfg.colors.background;
         backgroundAlt = nixpaletteColors.base01 or cfg.colors.backgroundAlt;
@@ -241,7 +241,7 @@ in
       default = false;
       description = ''
         Derive colors from ft-nixpalette base16 scheme.
-        Requires ft-nixpkgs.homeModules.nixpalette to be imported and configured.
+        Requires ft-nixpkgs.homeModules.ft-nixpalette to be imported and configured.
       '';
     };
 

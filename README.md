@@ -1,12 +1,17 @@
 # 🚀 ft-nixlaunch
 
 A modern, polished Rofi application launcher for NixOS and Wayland.
+Inspired by macOS Spotlight and KDE KRunner — centered, blurred, and fully configurable via Nix options.
 
 Inspired by macOS Spotlight, KDE KRunner, and Ulauncher — ft-nixlaunch transforms Rofi
 into a beautiful, centered launcher with blurred transparency, rounded corners,
 and clean typography.
 
-## ✨ Features
+- Centered launcher with blurred transparency and rounded corners
+- Multiple modes: **Apps**, **Run**, **Files** (fd), **Web** — switch with `Tab`
+- Hyprland integration — auto-adds keybinding and blur layer rules
+- Stylix integration — colors auto-derived from the active Base16 scheme
+- Fully configurable: colors, fonts, sizes, keybindings via Home Manager options
 
 - **Centered launcher** — floats in the middle of your screen
 - **Blurred transparency** — works with Hyprland and other Wayland compositors
@@ -96,7 +101,7 @@ programs.ft-nixlaunch = {
 }
 ```
 
-### Typography & Layout
+## Documentation
 
 ```nix
 programs.ft-nixlaunch = {

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# nixprism — Web Search Mode (rofi script protocol)
+# ft-nixlaunch — Web Search Mode (rofi script protocol)
 #
 # Type a query and press Enter to search the web.
 # Includes quick-access bookmarks for NixOS resources.
 
-SEARCH_ENGINE="${nixprism_SEARCH_ENGINE:-https://www.google.com/search?q=}"
-BROWSER_CMD="${nixprism_BROWSER:-}"
+SEARCH_ENGINE="${ft-nixlaunch_SEARCH_ENGINE:-https://www.google.com/search?q=}"
+BROWSER_CMD="${ft-nixlaunch_BROWSER:-}"
 
 open_url() {
     local url="$1"

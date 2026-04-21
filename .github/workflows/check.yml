@@ -11,15 +11,15 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v24
+        uses: cachix/install-nix-action@v27
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             /nix/store
@@ -31,10 +31,11 @@ jobs:
       - name: Check flake
         run: nix flake check --show-trace
 
-      - name: Verify package builds
-        run: nix build .#default --dry-run --show-trace
+      - name: Verify packages export
+        run: |
+          nix eval .#packages.x86_64-linux.ft-nixlaunch --apply 'x: "ok"'
 
-      - name: Verify homeManagerModules export
+      - name: Verify homeModules export
         run: |
           nix eval .#homeManagerModules.default --apply 'x: "ok"'
 

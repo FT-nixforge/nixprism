@@ -1,31 +1,31 @@
 #!/usr/bin/env bash
-# nixprism — Modern Rofi Application Launcher
+# ft-nixlaunch — Modern Rofi Application Launcher
 set -euo pipefail
 
-nixprism_DIR="@out@/share/nixprism"
-nixprism_THEME="${nixprism_THEME:-$nixprism_DIR/themes/nixprism.rasi}"
-nixprism_CONFIG="${nixprism_CONFIG:-}"
+ft-nixlaunch_DIR="@out@/share/ft-nixlaunch"
+ft-nixlaunch_THEME="${ft-nixlaunch_THEME:-$ft-nixlaunch_DIR/themes/ft-nixlaunch.rasi}"
+ft-nixlaunch_CONFIG="${ft-nixlaunch_CONFIG:-}"
 
 # Load user config if available
-if [[ -n "$nixprism_CONFIG" && -f "$nixprism_CONFIG" ]]; then
+if [[ -n "$ft-nixlaunch_CONFIG" && -f "$ft-nixlaunch_CONFIG" ]]; then
     # shellcheck disable=SC1090
-    source "$nixprism_CONFIG"
+    source "$ft-nixlaunch_CONFIG"
 fi
 
-SEARCH_ENGINE="${nixprism_SEARCH_ENGINE:-https://www.google.com/search?q=}"
-BROWSER="${nixprism_BROWSER:-}"
+SEARCH_ENGINE="${ft-nixlaunch_SEARCH_ENGINE:-https://www.google.com/search?q=}"
+BROWSER="${ft-nixlaunch_BROWSER:-}"
 
-FILE_SEARCH="$nixprism_DIR/scripts/file-search.sh"
-WEB_SEARCH="$nixprism_DIR/scripts/web-search.sh"
+FILE_SEARCH="$ft-nixlaunch_DIR/scripts/file-search.sh"
+WEB_SEARCH="$ft-nixlaunch_DIR/scripts/web-search.sh"
 
 # Export for sub-scripts
-export nixprism_SEARCH_ENGINE="$SEARCH_ENGINE"
-export nixprism_BROWSER="$BROWSER"
+export ft-nixlaunch_SEARCH_ENGINE="$SEARCH_ENGINE"
+export ft-nixlaunch_BROWSER="$BROWSER"
 
 MODE="${1:-drun}"
 
 common_args=(
-    -theme "$nixprism_THEME"
+    -theme "$ft-nixlaunch_THEME"
     -show-icons
     -icon-theme "Adwaita"
     -drun-display-format "{name}"
@@ -69,9 +69,9 @@ case "$MODE" in
     files|file)  MODE="files" ;;
     web|search)  MODE="web" ;;
     help|--help|-h)
-        echo "nixprism — Modern Application Launcher"
+        echo "ft-nixlaunch — Modern Application Launcher"
         echo ""
-        echo "Usage: nixprism [MODE]"
+        echo "Usage: ft-nixlaunch [MODE]"
         echo ""
         echo "Modes:"
         echo "  drun, apps    Application launcher (default)"
@@ -91,7 +91,7 @@ case "$MODE" in
         ;;
     *)
         echo "Unknown mode: $MODE" >&2
-        echo "Run 'nixprism --help' for usage." >&2
+        echo "Run 'ft-nixlaunch --help' for usage." >&2
         exit 1
         ;;
 esac

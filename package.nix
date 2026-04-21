@@ -12,7 +12,7 @@
 }:
 
 stdenvNoCC.mkDerivation {
-  pname = "nixprism";
+  pname = "ft-nixlaunch";
   version = "0.1.0";
 
   src = lib.cleanSource ./.;
@@ -25,27 +25,27 @@ stdenvNoCC.mkDerivation {
     runHook preInstall
 
     mkdir -p $out/bin
-    mkdir -p $out/share/nixprism/scripts
-    mkdir -p $out/share/nixprism/themes
+    mkdir -p $out/share/ft-nixlaunch/scripts
+    mkdir -p $out/share/ft-nixlaunch/themes
     mkdir -p $out/share/applications
 
     # Default theme
-    cp themes/nixprism.rasi $out/share/nixprism/themes/
+    cp themes/ft-nixlaunch.rasi $out/share/ft-nixlaunch/themes/
 
     # Mode scripts
     for script in scripts/file-search.sh scripts/web-search.sh; do
-      install -Dm755 "$script" "$out/share/nixprism/scripts/$(basename "$script")"
+      install -Dm755 "$script" "$out/share/ft-nixlaunch/scripts/$(basename "$script")"
     done
 
     # Main launcher
-    install -Dm755 scripts/nixprism-launcher.sh $out/bin/nixprism
+    install -Dm755 scripts/ft-nixlaunch-launcher.sh $out/bin/ft-nixlaunch
 
     # Substitute store paths (only the launcher references @out@)
-    substituteInPlace $out/bin/nixprism \
+    substituteInPlace $out/bin/ft-nixlaunch \
       --replace-fail "@out@" "$out"
 
     # Wrap with runtime dependencies
-    wrapProgram $out/bin/nixprism \
+    wrapProgram $out/bin/ft-nixlaunch \
       --prefix PATH : ${
         lib.makeBinPath [
           rofi
@@ -58,7 +58,7 @@ stdenvNoCC.mkDerivation {
         ]
       }
 
-    for script in $out/share/nixprism/scripts/*.sh; do
+    for script in $out/share/ft-nixlaunch/scripts/*.sh; do
       wrapProgram "$script" \
         --prefix PATH : ${
           lib.makeBinPath [
@@ -74,15 +74,15 @@ stdenvNoCC.mkDerivation {
     # Desktop entry
     {
       echo "[Desktop Entry]"
-      echo "Name=nixprism"
+      echo "Name=ft-nixlaunch"
       echo "Comment=Modern application launcher"
-      echo "Exec=$out/bin/nixprism"
+      echo "Exec=$out/bin/ft-nixlaunch"
       echo "Icon=application-menu"
       echo "Type=Application"
       echo "Categories=Utility;"
       echo "Keywords=launcher;search;run;applications;"
       echo "NoDisplay=true"
-    } > $out/share/applications/nixprism.desktop
+    } > $out/share/applications/ft-nixlaunch.desktop
 
     runHook postInstall
   '';
@@ -91,6 +91,6 @@ stdenvNoCC.mkDerivation {
     description = "A modern, polished Rofi application launcher for Wayland";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
-    mainProgram = "nixprism";
+    mainProgram = "ft-nixlaunch";
   };
 }

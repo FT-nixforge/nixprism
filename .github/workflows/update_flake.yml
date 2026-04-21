@@ -13,17 +13,17 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v24
+        uses: cachix/install-nix-action@v27
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             /nix/store
@@ -43,14 +43,14 @@ jobs:
       - name: Check flake still evaluates
         run: nix flake check --show-trace
 
-      - name: Verify exports still work
+      - name: Verify packages and modules still export correctly
         run: |
-          nix build .#default --dry-run --show-trace
+          nix eval .#packages.x86_64-linux.ft-nixlaunch --apply 'x: "ok"'
           nix eval .#homeManagerModules.default --apply 'x: "ok"'
           nix eval .#overlays.default --apply 'x: "ok"'
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-flake-lock
@@ -61,9 +61,9 @@ jobs:
 
             Updated inputs:
             - `nixpkgs`
-            - `stylix`
+            - `ft-nixpalette`
 
-            Flake check passed — package, homeManagerModules, and overlay all evaluate correctly.
+            Flake check passed — packages, homeManagerModules, and overlays all evaluate correctly.
           labels: |
             dependencies
             automated

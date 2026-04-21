@@ -15,7 +15,7 @@ let
     types
     ;
 
-  cfg = config.programs.nixprism;
+  cfg = config.programs.ft-nixlaunch;
 
   # Check if Stylix is available and enabled
   stylixAvailable =
@@ -25,9 +25,26 @@ let
 
   stylixColors = if stylixAvailable then config.lib.stylix.colors else null;
 
-  # Resolve colors: Stylix overrides manual config when integration is on
+  # Check if ft-nixpalette is available (via ft-nixpkgs.homeModules.nixpalette)
+  nixpaletteAvailable =
+    (config ? programs.nixpalette)
+    && (config.programs.nixpalette.enable or false)
+    && (config.programs.nixpalette.colors != { });
+
+  nixpaletteColors = if nixpaletteAvailable then config.programs.nixpalette.colors else null;
+
+  # Resolve colors: priority — ft-nixpalette > Stylix > manual config
   resolvedColors =
-    if cfg.stylixIntegration && stylixColors != null then
+    if cfg.nixpaletteIntegration && nixpaletteColors != null then
+      {
+        background = nixpaletteColors.base00 or cfg.colors.background;
+        backgroundAlt = nixpaletteColors.base01 or cfg.colors.backgroundAlt;
+        foreground = nixpaletteColors.base05 or cfg.colors.foreground;
+        foregroundAlt = nixpaletteColors.base04 or cfg.colors.foregroundAlt;
+        accent = nixpaletteColors.base0D or cfg.colors.accent;
+        urgent = nixpaletteColors.base08 or cfg.colors.urgent;
+      }
+    else if cfg.stylixIntegration && stylixColors != null then
       {
         background = "#${stylixColors.base00}";
         backgroundAlt = "#${stylixColors.base01}";
@@ -52,7 +69,7 @@ let
 
   # Generate the theme from module options
   generatedTheme = ''
-    /* nixprism — generated theme (do not edit; configure via Nix module) */
+    /* ft-nixlaunch — generated theme (do not edit; configure via Nix module) */
 
     * {
         bg:          ${resolvedColors.background}${alphaHex};
@@ -212,12 +229,21 @@ let
     }
   '';
 
-  nixprismPackage = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  ft-nixlaunchPackage = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
 in
 {
-  options.programs.nixprism = {
-    enable = mkEnableOption "nixprism, a modern Rofi application launcher";
+  options.programs.ft-nixlaunch = {
+    enable = mkEnableOption "ft-nixlaunch, a modern Rofi application launcher";
+
+    nixpaletteIntegration = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Derive colors from ft-nixpalette base16 scheme.
+        Requires ft-nixpkgs.homeModules.nixpalette to be imported and configured.
+      '';
+    };
 
     stylixIntegration = mkOption {
       type = types.bool;
@@ -344,7 +370,7 @@ in
     keybind = mkOption {
       type = types.str;
       default = "SUPER, space";
-      description = "Hyprland keybinding for launching nixprism (modifier, key format).";
+      description = "Hyprland keybinding for launching ft-nixlaunch (modifier, key format).";
     };
 
     extraConfig = mkOption {
@@ -357,29 +383,29 @@ in
   config = mkIf cfg.enable (mkMerge [
     # ── Base configuration ────────────────────────────────────────────
     {
-      home.packages = [ nixprismPackage ];
+      home.packages = [ ft-nixlaunchPackage ];
 
       # Generated theme
-      xdg.configFile."nixprism/theme.rasi".text = generatedTheme + cfg.extraConfig;
+      xdg.configFile."ft-nixlaunch/theme.rasi".text = generatedTheme + cfg.extraConfig;
 
       # Runtime config consumed by the launcher script
-      xdg.configFile."nixprism/config".text = ''
-        nixprism_SEARCH_ENGINE="${cfg.searchEngine}"
-        nixprism_BROWSER="${if cfg.browser != null then cfg.browser else ""}"
-        nixprism_TERMINAL="${if cfg.terminal != null then cfg.terminal else ""}"
+      xdg.configFile."ft-nixlaunch/config".text = ''
+        ft-nixlaunch_SEARCH_ENGINE="${cfg.searchEngine}"
+        ft-nixlaunch_BROWSER="${if cfg.browser != null then cfg.browser else ""}"
+        ft-nixlaunch_TERMINAL="${if cfg.terminal != null then cfg.terminal else ""}"
       '';
 
       # Point the launcher at the generated theme + config
       home.sessionVariables = {
-        nixprism_THEME = "${config.xdg.configHome}/nixprism/theme.rasi";
-        nixprism_CONFIG = "${config.xdg.configHome}/nixprism/config";
+        ft-nixlaunch_THEME = "${config.xdg.configHome}/ft-nixlaunch/theme.rasi";
+        ft-nixlaunch_CONFIG = "${config.xdg.configHome}/ft-nixlaunch/config";
       };
     }
 
     # ── Hyprland integration ──────────────────────────────────────────
     (mkIf cfg.hyprlandIntegration {
       wayland.windowManager.hyprland.settings = {
-        bind = [ "${cfg.keybind}, exec, nixprism" ];
+        bind = [ "${cfg.keybind}, exec, ft-nixlaunch" ];
         layerrule = [
           "blur, rofi"
           "ignorezero, rofi"

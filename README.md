@@ -1,8 +1,8 @@
-# 🔮 nixprism
+# 🚀 ft-nixlaunch
 
 A modern, polished Rofi application launcher for NixOS and Wayland.
 
-Inspired by macOS Spotlight, KDE KRunner, and Ulauncher — nixprism transforms Rofi
+Inspired by macOS Spotlight, KDE KRunner, and Ulauncher — ft-nixlaunch transforms Rofi
 into a beautiful, centered launcher with blurred transparency, rounded corners,
 and clean typography.
 
@@ -24,17 +24,17 @@ and clean typography.
 
 ### As a flake input
 
-Add nixprism to your `flake.nix`:
+Add ft-nixlaunch to your `flake.nix`:
 
 ```nix
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
-    nixprism.url = "github:youruser/nixprism"; # or "path:./nixprism"
+    ft-nixlaunch.url = "github:FT-nixforge/ft-nixlaunch";
   };
 
-  outputs = { nixpkgs, home-manager, nixprism, ... }: {
+  outputs = { nixpkgs, home-manager, ft-nixlaunch, ... }: {
     # …your config
   };
 }
@@ -47,9 +47,9 @@ In your Home Manager configuration:
 ```nix
 { inputs, ... }:
 {
-  imports = [ inputs.nixprism.homeManagerModules.default ];
+  imports = [ inputs.ft-nixlaunch.homeManagerModules.default ];
 
-  programs.nixprism = {
+  programs.ft-nixlaunch = {
     enable = true;
 
     # Optional: auto-bind SUPER+Space in Hyprland
@@ -66,24 +66,24 @@ In your Home Manager configuration:
 ```nix
 { inputs, pkgs, ... }:
 {
-  home.packages = [ inputs.nixprism.packages.${pkgs.system}.default ];
+  home.packages = [ inputs.ft-nixlaunch.packages.${pkgs.system}.default ];
 }
 ```
 
 Then add a keybinding manually in your Hyprland config:
 
 ```conf
-bind = SUPER, space, exec, nixprism
+bind = SUPER, space, exec, ft-nixlaunch
 ```
 
 ## ⚙️ Configuration
 
-All options live under `programs.nixprism`.
+All options live under `programs.ft-nixlaunch`.
 
 ### Colours
 
 ```nix
-programs.nixprism = {
+programs.ft-nixlaunch = {
   colors = {
     background    = "#1e1e2e";  # Primary background
     backgroundAlt = "#313244";  # Input bar / selection
@@ -93,13 +93,13 @@ programs.nixprism = {
     urgent        = "#f38ba8";  # Urgent items
   };
   opacity = "dd"; # Hex alpha (00–ff)
-};
+}
 ```
 
 ### Typography & Layout
 
 ```nix
-programs.nixprism = {
+programs.ft-nixlaunch = {
   font = {
     name = "Inter";
     size = 13;
@@ -112,25 +112,49 @@ programs.nixprism = {
   maxResults = 7;
   padding    = 24;
   spacing    = 12;
-};
+}
 ```
 
 ### Web Search
 
 ```nix
-programs.nixprism = {
+programs.ft-nixlaunch = {
   searchEngine = "https://duckduckgo.com/?q=";
   browser      = "firefox"; # null → xdg-open
-};
+}
 ```
 
 ### Keybinding
 
 ```nix
-programs.nixprism = {
+programs.ft-nixlaunch = {
   hyprlandIntegration = true;   # Adds bind + blur layer rules
   keybind             = "SUPER, space"; # Hyprland format
-};
+}
+```
+
+### ft-nixpalette Integration
+
+If you use [ft-nixpalette](https://github.com/FT-nixforge/ft-nixpalette) via [ft-nixpkgs](https://github.com/FT-nixforge/ft-nixpkgs):
+
+```nix
+{ inputs, ... }:
+{
+  imports = [
+    inputs.ft-nixpkgs.homeModules.nixpalette
+    inputs.ft-nixlaunch.homeManagerModules.default
+  ];
+
+  programs.nixpalette = {
+    enable = true;
+    # ... your base16 scheme
+  };
+
+  programs.ft-nixlaunch = {
+    enable = true;
+    nixpaletteIntegration = true;
+  };
+}
 ```
 
 ### Stylix Integration
@@ -138,7 +162,7 @@ programs.nixprism = {
 If you use [Stylix](https://github.com/danth/stylix) for system-wide theming:
 
 ```nix
-programs.nixprism.stylixIntegration = true;
+programs.ft-nixlaunch.stylixIntegration = true;
 # Colours are auto-derived from the active base16 scheme.
 ```
 
@@ -147,7 +171,7 @@ programs.nixprism.stylixIntegration = true;
 Append raw rasi rules for advanced overrides:
 
 ```nix
-programs.nixprism.extraConfig = ''
+programs.ft-nixlaunch.extraConfig = ''
   window {
     width: 800px;
   }
@@ -159,11 +183,11 @@ programs.nixprism.extraConfig = ''
 ### Launch from the command line
 
 ```bash
-nixprism           # App launcher (default)
-nixprism run       # Command runner
-nixprism files     # File search
-nixprism web       # Web search
-nixprism --help    # Show help
+ft-nixlaunch           # App launcher (default)
+ft-nixlaunch run       # Command runner
+ft-nixlaunch files     # File search
+ft-nixlaunch web       # Web search
+ft-nixlaunch --help    # Show help
 ```
 
 ### Keyboard shortcuts inside the launcher
@@ -216,22 +240,22 @@ layer_effects "rofi" blur enable
 
 ### Other Wayland Compositors
 
-nixprism uses `transparency: "real"` in the theme. Enable blur for
+ft-nixlaunch uses `transparency: "real"` in the theme. Enable blur for
 Rofi / layer-shell surfaces in your compositor's settings.
 
 ## 📂 Project Structure
 
 ```
-nixprism/
+ft-nixlaunch/
 ├── flake.nix              Nix flake entry point
 ├── package.nix            Package derivation
 ├── module.nix             Home Manager module with options
 ├── scripts/
-│   ├── nixprism-launcher.sh  Main launcher wrapper
+│   ├── ft-nixlaunch-launcher.sh  Main launcher wrapper
 │   ├── file-search.sh     File search mode (rofi script)
 │   └── web-search.sh      Web search mode (rofi script)
 ├── themes/
-│   └── nixprism.rasi         Default theme (Catppuccin Mocha)
+│   └── ft-nixlaunch.rasi       Default theme (Catppuccin Mocha)
 └── README.md
 ```
 

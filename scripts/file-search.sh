@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# nixprism — File Search Mode (rofi script protocol)
+# ft-nixlaunch — File Search Mode (rofi script protocol)
 #
 # Lists files from the home directory using fd.
 # Rofi handles filtering as the user types.

@@ -1,9 +1,9 @@
 /*
- * nixprism — Default Theme
+ * ft-nixlaunch — Default Theme
  * A modern, macOS Spotlight-inspired launcher theme
  *
  * Color scheme: Catppuccin Mocha
- * Override with the Nix module or set nixprism_THEME env var.
+ * Override with the Nix module or set ft-nixlaunch_THEME env var.
  */
 
 * {

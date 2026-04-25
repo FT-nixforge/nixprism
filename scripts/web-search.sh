@@ -4,8 +4,8 @@
 # Type a query and press Enter to search the web.
 # Includes quick-access bookmarks for NixOS resources.
 
-SEARCH_ENGINE="${ft-nixlaunch_SEARCH_ENGINE:-https://www.google.com/search?q=}"
-BROWSER_CMD="${ft-nixlaunch_BROWSER:-}"
+SEARCH_ENGINE="${ft_nixlaunch_SEARCH_ENGINE:-https://www.google.com/search?q=}"
+BROWSER_CMD="${ft_nixlaunch_BROWSER:-}"
 
 open_url() {
     local url="$1"

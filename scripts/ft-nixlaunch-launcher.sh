@@ -2,30 +2,30 @@
 # ft-nixlaunch — Modern Rofi Application Launcher
 set -euo pipefail
 
-ft-nixlaunch_DIR="@out@/share/ft-nixlaunch"
-ft-nixlaunch_THEME="${ft-nixlaunch_THEME:-$ft-nixlaunch_DIR/themes/ft-nixlaunch.rasi}"
-ft-nixlaunch_CONFIG="${ft-nixlaunch_CONFIG:-}"
+ft_nixlaunch_DIR="@out@/share/ft-nixlaunch"
+ft_nixlaunch_THEME="${ft_nixlaunch_THEME:-$ft_nixlaunch_DIR/themes/ft-nixlaunch.rasi}"
+ft_nixlaunch_CONFIG="${ft_nixlaunch_CONFIG:-}"
 
 # Load user config if available
-if [[ -n "$ft-nixlaunch_CONFIG" && -f "$ft-nixlaunch_CONFIG" ]]; then
+if [[ -n "$ft_nixlaunch_CONFIG" && -f "$ft_nixlaunch_CONFIG" ]]; then
     # shellcheck disable=SC1090
-    source "$ft-nixlaunch_CONFIG"
+    source "$ft_nixlaunch_CONFIG"
 fi
 
-SEARCH_ENGINE="${ft-nixlaunch_SEARCH_ENGINE:-https://www.google.com/search?q=}"
-BROWSER="${ft-nixlaunch_BROWSER:-}"
+SEARCH_ENGINE="${ft_nixlaunch_SEARCH_ENGINE:-https://www.google.com/search?q=}"
+BROWSER="${ft_nixlaunch_BROWSER:-}"
 
-FILE_SEARCH="$ft-nixlaunch_DIR/scripts/file-search.sh"
-WEB_SEARCH="$ft-nixlaunch_DIR/scripts/web-search.sh"
+FILE_SEARCH="$ft_nixlaunch_DIR/scripts/file-search.sh"
+WEB_SEARCH="$ft_nixlaunch_DIR/scripts/web-search.sh"
 
 # Export for sub-scripts
-export ft-nixlaunch_SEARCH_ENGINE="$SEARCH_ENGINE"
-export ft-nixlaunch_BROWSER="$BROWSER"
+export ft_nixlaunch_SEARCH_ENGINE="$SEARCH_ENGINE"
+export ft_nixlaunch_BROWSER="$BROWSER"
 
 MODE="${1:-drun}"
 
 common_args=(
-    -theme "$ft-nixlaunch_THEME"
+    -theme "$ft_nixlaunch_THEME"
     -show-icons
     -icon-theme "Adwaita"
     -drun-display-format "{name}"
@@ -96,8 +96,8 @@ case "$MODE" in
         ;;
 esac
 
-# Main loop: handles mode-switching via Alt+key custom keybindings
-# Rofi exits with codes 10-13 for kb-custom-1 through kb-custom-4
+# Main loop: handles mode-switching via Alt+key custom keybindings.
+# Rofi exits with codes 10–13 for kb-custom-1 through kb-custom-4.
 while true; do
     launch_rofi "$MODE"
     exit_code=$?

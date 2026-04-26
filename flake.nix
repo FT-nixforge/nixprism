@@ -24,7 +24,7 @@
         repo         = "github:FT-nixforge/ft-nixlaunch";
         provides     = [ "packages" "homeModules" "overlays" ];
         dependencies = [ "ft-nixpalette" ];
-        version      = "2.1.0";
+        version      = "2.2.0";
       };
 
       # ── Package ──────────────────────────────────────────────────────────

@@ -9,11 +9,16 @@
 #
 # Requires the Hyprland Home Manager module to be imported and
 # `wayland.windowManager.hyprland.enable = true` in your config.
-{ config, lib, ... }:
+{ config, lib, options, ... }:
 
 let
   cfg  = config.programs.ft-nixlaunch;
   hCfg = cfg.integrations.hyprland;
+
+  # True only when the Hyprland Home Manager module is actually loaded.
+  hyprlandHmAvailable = options ? wayland
+    && options.wayland ? windowManager
+    && options.wayland.windowManager ? hyprland;
 in
 {
   options.programs.ft-nixlaunch.integrations.hyprland = {
@@ -61,7 +66,7 @@ in
 
   };
 
-  config = lib.mkIf (cfg.enable && cfg.compositor == "Hyprland") {
+  config = lib.mkIf (cfg.enable && cfg.compositor == "Hyprland" && hyprlandHmAvailable) {
     wayland.windowManager.hyprland.settings = {
       bind = [
         "${hCfg.keybind}, exec, ft-nixlaunch"

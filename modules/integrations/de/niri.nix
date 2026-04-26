@@ -18,11 +18,16 @@
 #
 # Requires the Niri Home Manager module to be imported and configured
 # (e.g. via programs.niri.enable = true or the niri flake).
-{ config, lib, ... }:
+{ config, lib, options, ... }:
 
 let
   cfg  = config.programs.ft-nixlaunch;
   nCfg = cfg.integrations.niri;
+
+  # True only when the niri Home Manager module is actually loaded.
+  # The module provides programs.niri; without it that option path doesn't
+  # exist and referencing it causes an evaluation error even inside mkIf.
+  niriHmAvailable = options ? programs && options.programs ? niri;
 in
 
 {
@@ -59,7 +64,9 @@ in
   };
 
   # ── Niri config ─────────────────────────────────────────────────────────────
-  config = lib.mkIf (cfg.enable && cfg.compositor == "Niri") {
+  # Only set programs.niri.settings.binds when the niri HM module is loaded;
+  # otherwise the option path doesn't exist and evaluation would fail.
+  config = lib.mkIf (cfg.enable && cfg.compositor == "Niri" && niriHmAvailable) {
     programs.niri.settings.binds = lib.mkMerge [
       {
         # Spawn ft-nixlaunch when the keybind is pressed.
